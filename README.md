@@ -20,13 +20,27 @@
 ### Datasets
 
 
-* [`train.csv`](datasets/train.csv): Provided train dataset
-* [`train_cleaned.csv`](datasets/train_cleaned.csv): Cleaned train dataset 
-* [`train_modeling.csv`](datasets/train_modeling.csv): Test dataset ready to be used for modeling  
-* [`test.csv`](datasets/test.csv): Provided test dataset 
-* [`test_cleaned.csv`](datasets/test_cleaned.csv): Cleaned test dataset
-* [`test_modeling.csv`](datasets/test_modeling.csv): Test dataset ready to be used for modeling 
-* [`kaggle_submission_sujayjangam.csv`](datasets/kaggle_submission_sujayjangam.csv): Kaggle Submission with predicted values of `SalePrice`
+* [`train.csv`](../data/train.csv): Provided train dataset from kaggle
+* [`train_clean.csv`](../data/train_clean.csv): Cleaned train dataset 
+* [`weather_train_merged.csv`](../data/weather_train_merged.csv): Merged dataframe between weather and train 
+* [`merged_train_multi.csv`](../data/merged_train_multi.csv): Merged dataframe with features having multicollinearity for model testing
+* [`merged_train_final.csv`](../data/merged_train_final.csv): Merged dataframe with minimal multicollinearity for model testing
+* [`final_train.csv`](../data/final_train.csv): Final merged dataframe used for model training
+* [`test.csv`](../data/test.csv): Provided test dataset from kaggle 
+* [`test_clean.csv`](../data/test_clean.csv): Cleaned test dataset
+* [`weather_test_merged.csv`](../data/test_modeling.csv): Merged dataframe between weather and test
+* [`merged_tets_multi.csv`](../data/test_modeling.csv): Merged dataframe with features having multicollinearity for model testing
+* [`merged_test_final.csv`](../data/test_modeling.csv): Merged dataframe with minimal multicollinearity for model testing
+* [`final_test.csv`](../data/test_modeling.csv): Final merged dataframe used for model predictions for kaggle submissions
+* [`weather.csv`](../data/test_modeling.csv): Provided weather dataset from kaggle
+* [`weather_clean.csv`](../data/test_modeling.csv): Cleaned weather dataset
+* [`spray.csv`](../data/test_modeling.csv): Provided spray dataset from kaggle
+* [`spray_clean.csv`](../data/test_modeling.csv): Cleaned spray dataset
+* [`kaggle_submission.csv`](../data/kaggle_submission.csv): Kaggle Submission with predicted values of `wnvpresent`
+* [`base_model_scores.csv`](../data/kaggle_submission.csv): base_model_scores saved from jupyter notebook
+* [`nummosquitos_preds.csv`](../data/kaggle_submission.csv): nummosquitos prediction from our `LinearModel` that is used in our final model
+* [`sample_Submission.csv`](../data/kaggle_submission.csv): Sample of a submission to kaggle
+
 
 ---
 ### Proposed Model
@@ -43,7 +57,7 @@
 2. Most of the missing data was interpreted from the Data Dictionary, and could be interpreted to 'None' values. However for `Lot Frontage` we had to impute the values using the mean Square Footage in each neighborhood.
 
 
-#### Encoding, EDA and Feature Selection:
+#### EDA:
 1. Once the files were all clean, we set about carrying out manual encoding or one-hot encoding. This needs to be done so that we may feed features from our data set into our model.
 2. Along the way, we dropped columns where we saw little to no variance. Columns where there was indication of multicollinearity were also dropped, keeping one of them.
 3. Upon investigation of trends in the data, we saw that there were strong indicators of correlation in 4 main groups with our target, `SalePrice`.
@@ -54,17 +68,23 @@
 4. We isolated features that fell into these groups, and eventually begain the modeling process.
 
 #### Feature Engineering:
-1. We noticed that our test dataset did not have the `nummosquitos` feature. 
+1. We noticed that our test dataset did not have the `nummosquitos` feature.
+2. However upon exploration of the feature, it turns out that this feature has the highest correlation with our target. Upon testing, we decided to create another `LinearRegression` model to predict the `nummosquitos` feature for our kaggle test dataset.
+3. We also made use of Polynomial Features to add different combinations of features that improved our overall correlation with our target. 
+4. Considering that mosquitos take 7-14 days to hatch, we added in a time lag feature for `tavg`, `dewpoint` and `preciptotal` as we felt that may potentially have an impact on our model's performance with the target.
+5. We decided to experiment with two different datasets, one with multicollinearity between features, and one with minimal multicollinearity.
 
 #### Modeling:
-1. We began with Linear Regression models, where we iterated through starting with a small number of features, and eventually including all the features that were in our 4 groups above.
-2. We move to using Regularisation and found that the Lasso model had the best Root Mean Squared Error of 27,904.
-3. After creating our final model, we fed all our remaining data into our final model and generate the predictions for Kaggle.
-4. Afterwhich, we dove back into our final model to gain insights towards our problem statement.
+1. We began with Classification models, where we iterated through each dataset and ran base models.
+2. Afterwhich we identified the dataset with multicollinearity as the dataset that produced better model scores.
+3. Next we Tuned our top models which turned out to be `LogisticRegression`, `AdaBoost`, and `GradientBoost`. 
+4. Once tuning was completed, we discussed and made the decision to try modeling with our `nummosquitos` variable. This ended up improving our model score by 4% - 6% which we felt was significant
+5. As such we decided to create a `LinearRegression` model to predict the `nummosquitos` feature for our kaggle test dataset. We tested out different models such as `LinearRegression`, `Ridge`, `Lasso`, and `ElasticNet`. We kept this part fairly simple as we found that the model seemed to perform well.
+6. Armed with all the features we felt were necessary, we ran our final model again and ended up with the scores mentioned above for our final model, afterwhich we proceeded for Kaggle submission.
 
 ---
 
-### Conclusions and Recommendations:
+#### Conclusions and Recommendations:
 
 - Factors such as months, number of mosquitoes, dewpoint (humidity), location and temperature play an important role in predicting West nile Virus Infections.
 
@@ -89,7 +109,6 @@
 
 - Finetune Linear Regression model to better predict number of mosquitos
 - Further hyper parameter tuning, or even use of other blackbox models such as Neural Networks.
-
 
 ---
 
