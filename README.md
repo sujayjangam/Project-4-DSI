@@ -190,8 +190,8 @@ Improve Data Collection
 11. https://www.cmmcp.org/pesticide-information/pages/zenivex-e4-etofenprox
 
 - Zenivex Information
-<br>
+
 12. http://npic.orst.edu/factsheets/archive/malatech.html
-<br>
+
 - Malathion Information
-<br>
+
