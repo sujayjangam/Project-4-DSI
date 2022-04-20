@@ -13,7 +13,19 @@
 ---
 
 ### Problem Statement
+West Nile Virus is one of the most prominent vector-borne diseases affecting Chicago, with 225 human fatalities occurring in the year following its first detection in the local avian species in 2001<sup> 1 </sup>. 
 
+In the years since, the Chicago Department of Public Health and the Centers for Disease Control and Prevention have been managing the prevalence of the disease well. However, the recent epidemic (2013) has begun to call into question if the money spent on control measures is being used efficiently.
+
+To this end, our team at (DATA-SCIENCE) has been tasked to use past mosquito collection and weather data of the city of Chicago to create a classifying model that is able to predict the presence of West Nile Virus based on location and weather so as to effectively assign resources to control the spread of the West Nile Virus.
+
+Additionally, the Chicago City Council has also requested for a cost benefit analysis to be conducted on the effects of its insecticide spraying to see if its application is a valuable use of their budget.
+
+**Source:**
+<br>
+Chicago 2013 West Nile Virus Report
+<br>
+https://www.chicago.gov/content/dam/city/depts/cdph/statistics_and_reports/CDInfo_2013_JULY_WNV.pdf
 
 ---
 
@@ -51,21 +63,34 @@
 ---
 
 ### Summary of Analysis
+The most notable point of the EDA was that the data sampling was very inconsistent both time-wise and location-wise. With this in mind, we did not expect our model to be of high quality.
 
 #### Cleaning:
-1. First of all, I explored the data files provided. It was clear that there were many missing data, 9,822 to be exact. In a file with 2051 rows, this was an alarming number of missing data.
-2. Most of the missing data was interpreted from the Data Dictionary, and could be interpreted to 'None' values. However for `Lot Frontage` we had to impute the values using the mean Square Footage in each neighborhood.
-
+1. Change the date on every dataframe to datetime
+2. Create 'year', 'month', 'week', and 'weekday' columns from the date
+3. Change the column names on every dataframe to lowercase
+4. Drop duplicates from training data
+5. Drop 'Time' column from spray data
+6. Replace missing values ('-' and 'M') in weather data with NA
+7. Fill 'tavg' NA values with average temperature calculated from 'tmax' and 'tmin' in weather data
+8. Drop 'water1' column for weather data
+9. Drop 'depth' column in weather data since it is just a linear transformation of 'station'
+10.Drop 'snowfall' column in weather data since no snow during months present in our training data
+11.Drop 'depart' column from weather data
+12.ffill for sunset and sunrise NA values
+13.Reformat time in 'sunrise' and 'sunset' columns and convert to datetime
+14.Replace erroneous values in 'sunset' based on educated guesses
+15.Replace blank 'codesum' value with 'moderate' according to noaa_weather_qclcd_documentation
+16.Separate codesum values
+17.Fill remaining NA values with median of their respective columns
+18.Save all files as clean versions
 
 #### EDA:
-1. Once the files were all clean, we set about carrying out manual encoding or one-hot encoding. This needs to be done so that we may feed features from our data set into our model.
-2. Along the way, we dropped columns where we saw little to no variance. Columns where there was indication of multicollinearity were also dropped, keeping one of them.
-3. Upon investigation of trends in the data, we saw that there were strong indicators of correlation in 4 main groups with our target, `SalePrice`.
-    - Square Footage
-    - Quality of the Property
-    - Location
-    - Others, e.g. Age of property
-4. We isolated features that fell into these groups, and eventually begain the modeling process.
+The EDA indicated that in terms of weather, temperature and humidity had a positive correlation with the number of mosquitoes and, through that, the presence of WNV. Additionally, we could also see particularly in the 2013 data, that insecticide spraying was effective in reducing the total and WNV number of mosquitoes. However, we also realised that the spraying done in both years was not really targeted and could have been improved by using the metric of rate of infection per trap, and targeting these particular locations instead. 
+
+Through this metric, we could identify on the map of Chicago the neigbourhoods that had the highest proportions of WNV mosquitoes, noting that they were close to areas that were easily identifiable as ideal breeding grounds for both the reservoir and the vector species of WNV e.g. LaBagh Woods, River Park, and Lincoln Zoo; basically any large area of land where it would be unlikely to have sufficiently thorough groundskeeping to remove mosquito breeding spots.
+
+From this insight, we would expect that further location-based features to arise if we were to keep using the 'WNV mosquito infection rate' to identify hotspots.
 
 #### Feature Engineering:
 1. We noticed that our test dataset did not have the `nummosquitos` feature.
@@ -101,9 +126,17 @@
 
 #### Recommendations
 
-- Optical sensing based counting system to ensure consistent sampling
+Spray Calculatively
+- By spraying in locations that are known to have high rate of WNV mosquitoes, we expect to more efficient with our spraying, exterminating more WNV-infected mosquitoes than otherwise
 
-- Do greater checks on mosquitos on banks of Lake Michigan from Jul - Sep
+Alternate Insecticides
+- Using stronger insecticides such as Malathion may prove to be more effective
+
+Alternate Insecticide Dispersal Methods
+- Aerial spraying or community-based larvicide application has been shown to be effective in managing the mosquitoes better
+
+Improve Data Collection
+- Using a sensor that is capable of identifying and differentiating mosquitoes could help our poor data sampling issue and reduce inconsistencies in the sample collection
 
 #### Future Works
 
@@ -112,7 +145,7 @@
 
 ---
 
-### Sources
+### External Research
 
 1. https://academic.oup.com/jme/article/56/6/1456/5572378
 
@@ -126,6 +159,39 @@
 
 - Learnt about the worst time periods for WNV
 
-4. https://link.springer.com/article/10.1007/s00340-019-7361-2
-
-- Learnt about counting mosquitos through optical sensing
+4. https://www.chicago.gov/city/en/depts/cdph/provdrs/healthy_living/news/2021/august/city-to-spray-insecticide-wednesday-to-kill-mosquitoes.html
+<br>
+- 2021 Chicago Zenivex Spraying
+<br>
+5. https://www.centralmosquitocontrol.com/-/media/files/centralmosquitocontrol-na/us/specimen%20labels/zenivex%20e20%20specimen%20label.pdf
+<br>
+- Zenivex Product Label
+<br>
+6. https://pubmed.ncbi.nlm.nih.gov/23883850/
+<br>
+- Larvicide Effectiveness
+<br>
+7. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2661378/
+<br>
+- Efficacy of Community-based Larvicide Application
+<br>
+8. https://link.springer.com/article/10.1007/s00340-019-7361-2
+<br> 
+- Optical Sensor-based Counting System
+<br>
+9. https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0179673
+<br>
+- Insecticide Resistance to Permethrin and Malathion
+<br>
+10. https://www.science.org/content/article/after-40-years-most-important-weapon-against-mosquitoes-may-be-failing
+<br>
+- Mosquito Resistance to Pyrethroid Insecticides
+<br>
+11. https://www.cmmcp.org/pesticide-information/pages/zenivex-e4-etofenprox
+<br>
+- Zenivex Information
+<br>
+12. http://npic.orst.edu/factsheets/archive/malatech.html
+<br>
+- Malathion Information
+<br>
