@@ -160,35 +160,35 @@ Improve Data Collection
 - Learnt about the worst time periods for WNV
 
 4. https://www.chicago.gov/city/en/depts/cdph/provdrs/healthy_living/news/2021/august/city-to-spray-insecticide-wednesday-to-kill-mosquitoes.html
-<br>
+
 - 2021 Chicago Zenivex Spraying
-<br>
+
 5. https://www.centralmosquitocontrol.com/-/media/files/centralmosquitocontrol-na/us/specimen%20labels/zenivex%20e20%20specimen%20label.pdf
-<br>
+
 - Zenivex Product Label
-<br>
+
 6. https://pubmed.ncbi.nlm.nih.gov/23883850/
-<br>
+
 - Larvicide Effectiveness
-<br>
+
 7. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2661378/
-<br>
+
 - Efficacy of Community-based Larvicide Application
-<br>
+
 8. https://link.springer.com/article/10.1007/s00340-019-7361-2
-<br> 
+
 - Optical Sensor-based Counting System
-<br>
+
 9. https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0179673
-<br>
+
 - Insecticide Resistance to Permethrin and Malathion
-<br>
+
 10. https://www.science.org/content/article/after-40-years-most-important-weapon-against-mosquitoes-may-be-failing
-<br>
+
 - Mosquito Resistance to Pyrethroid Insecticides
-<br>
+
 11. https://www.cmmcp.org/pesticide-information/pages/zenivex-e4-etofenprox
-<br>
+
 - Zenivex Information
 <br>
 12. http://npic.orst.edu/factsheets/archive/malatech.html
