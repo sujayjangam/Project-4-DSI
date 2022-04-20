@@ -20,12 +20,51 @@
 ### Datasets
 
 
+* [`train.csv`](datasets/train.csv): Provided train dataset
+* [`train_cleaned.csv`](datasets/train_cleaned.csv): Cleaned train dataset 
+* [`train_modeling.csv`](datasets/train_modeling.csv): Test dataset ready to be used for modeling  
+* [`test.csv`](datasets/test.csv): Provided test dataset 
+* [`test_cleaned.csv`](datasets/test_cleaned.csv): Cleaned test dataset
+* [`test_modeling.csv`](datasets/test_modeling.csv): Test dataset ready to be used for modeling 
+* [`kaggle_submission_sujayjangam.csv`](datasets/kaggle_submission_sujayjangam.csv): Kaggle Submission with predicted values of `SalePrice`
+
 ---
 ### Proposed Model
+- Our final model is a `LogisticRegression` model with the following scores.
+    * Recall Score: 68.5%
+    * Test_AUC Score: 85%
 
 ---
 
 ### Summary of Analysis
+
+#### Cleaning:
+1. First of all, I explored the data files provided. It was clear that there were many missing data, 9,822 to be exact. In a file with 2051 rows, this was an alarming number of missing data.
+2. Most of the missing data was interpreted from the Data Dictionary, and could be interpreted to 'None' values. However for `Lot Frontage` we had to impute the values using the mean Square Footage in each neighborhood.
+
+
+#### Encoding, EDA and Feature Selection:
+1. Once the files were all clean, we set about carrying out manual encoding or one-hot encoding. This needs to be done so that we may feed features from our data set into our model.
+2. Along the way, we dropped columns where we saw little to no variance. Columns where there was indication of multicollinearity were also dropped, keeping one of them.
+3. Upon investigation of trends in the data, we saw that there were strong indicators of correlation in 4 main groups with our target, `SalePrice`.
+    - Square Footage
+    - Quality of the Property
+    - Location
+    - Others, e.g. Age of property
+4. We isolated features that fell into these groups, and eventually begain the modeling process.
+
+#### Feature Engineering:
+1. We noticed that our test dataset did not have the `nummosquitos` feature. 
+
+#### Modeling:
+1. We began with Linear Regression models, where we iterated through starting with a small number of features, and eventually including all the features that were in our 4 groups above.
+2. We move to using Regularisation and found that the Lasso model had the best Root Mean Squared Error of 27,904.
+3. After creating our final model, we fed all our remaining data into our final model and generate the predictions for Kaggle.
+4. Afterwhich, we dove back into our final model to gain insights towards our problem statement.
+
+---
+
+### Conclusions and Recommendations:
 
 - Factors such as months, number of mosquitoes, dewpoint (humidity), location and temperature play an important role in predicting West nile Virus Infections.
 
@@ -40,15 +79,16 @@
 |Total cost savings| + \$ 543,163|
 |Cost saving per additional human infection after 3 infections| + \$ 1,133,900|
 
-### Recommendations
+#### Recommendations
 
 - Optical sensing based counting system to ensure consistent sampling
 
 - Do greater checks on mosquitos on banks of Lake Michigan from Jul - Sep
 
-### Future Works
+#### Future Works
 
-- Finetune Logistic Regression to better predict number of mosquitos
+- Finetune Linear Regression model to better predict number of mosquitos
+- Further hyper parameter tuning, or even use of other blackbox models such as Neural Networks.
 
 
 ---
